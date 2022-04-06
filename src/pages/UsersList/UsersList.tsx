@@ -49,9 +49,8 @@ export default function UsersList() {
 	const [foundUsers, setFoundUsers] = useState<Array<InputType> | null>(null);
 
 	const inputValidator = (value: any) => (!value ? 'Please enter a text.' : '');
-
 	const navigate = useNavigate();
-
+  
 	const handleSearchChange = (dataItem: any) => {
 		if (dataItem.value === '') {
 			return setFoundUsers(null);
@@ -59,7 +58,6 @@ export default function UsersList() {
 		const foundUser = usersFromApi.filter((user) =>
 			user.userName.toLowerCase().includes(dataItem.value.toLowerCase()),
 		);
-
 		setFoundUsers(foundUser ? foundUser : null);
 	};
 

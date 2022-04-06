@@ -1,0 +1,12 @@
+.container {
+	padding-right: 100px;
+	padding-left: 100px;
+}
+
+.formContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+

@@ -1,0 +1,108 @@
+.container {
+	display: block;
+	width: 100%;
+	max-width: 600px;
+	min-height: 80px;
+	padding: 30px;
+	margin-right: auto;
+	margin-left: auto;
+	box-sizing: border-box;
+}
+
+.list {
+	position: relative;
+	padding-top: 20px;
+	padding-right: 12px;
+	padding-bottom: 12px;
+	padding-left: 12px;
+	border: 2px groove rgb(172, 172, 172);
+	border-radius: 15px;
+	margin: 0;
+	list-style: none;
+}
+
+.kFormLegend {
+	position: absolute;
+	top: -14px;
+	left: 12px;
+	display: inline-block;
+	max-width: 200px;
+	border-bottom: 2px solid grey;
+	background-color: #fff;
+	text-transform: uppercase;
+}
+
+.mb3 {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 20px;
+	margin-bottom: 1rem;
+}
+
+.inputContainer {
+	max-width: 450px;
+}
+
+.inputContainer > legend {
+	position: absolute;
+	top: 27px;
+	left: 0;
+}
+
+.mb3 > div,
+.mb3 > div > div {
+	position: relative;
+	display: inline-flex;
+	flex-direction: column;
+	vertical-align: middle;
+	justify-content: stretch;
+	width: 100%;
+}
+
+.mb3 > div > input:focus-within,
+.mb3 > div > div > input:focus-within {
+	border-color: rgba(0, 0, 0, 0.16);
+	box-shadow: 0 0 0 2px rgb(0 0 0 / 8%);
+	outline: none;
+}
+
+.mb3 > div > span,
+.mb3 > div > div > span {
+	transform-origin: left center;
+	transition: transform 0.2s ease-out, color 0.2s ease-out, top 0.2s ease-out, left 0.2s ease-out;
+}
+
+.mb3 > div:focus-within > span,
+.mb3 > div > div:focus-within > span {
+	top: -21px;
+	left: 0;
+	transform: scale(1);
+}
+
+.btn {
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	background-color: #fff;
+}
+
+.btn > svg {
+	width: 26px;
+	height: 26px;
+	fill: blue;
+}
+
+.btn:hover,
+.btn > svg:hover {
+	cursor: pointer;
+	fill: green;
+}
+
+.errorMessage {
+	font-size: 14px;
+	color: red;
+}

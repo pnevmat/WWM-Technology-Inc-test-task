@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import {process, State} from '@progress/kendo-data-query';
 import {
@@ -48,7 +49,8 @@ export default function UsersList() {
 	const [foundUsers, setFoundUsers] = useState<Array<InputType> | null>(null);
 
 	const inputValidator = (value: any) => (!value ? 'Please enter a text.' : '');
-
+	const navigate = useNavigate();
+  
 	const handleSearchChange = (dataItem: any) => {
 		if (dataItem.value === '') {
 			return setFoundUsers(null);
@@ -56,8 +58,6 @@ export default function UsersList() {
 		const foundUser = usersFromApi.filter((user) =>
 			user.userName.toLowerCase().includes(dataItem.value.toLowerCase()),
 		);
-		console.log('Found users: ', foundUser);
-
 		setFoundUsers(foundUser ? foundUser : null);
 	};
 
@@ -70,6 +70,8 @@ export default function UsersList() {
 		const clickedRow = usersFromApi.find((user) => user.id === e.dataItem.id);
 
 		setState(clickedRow ? {...state, gridClickedRow: clickedRow} : {...state});
+
+		navigate(`/userDetail/${clickedRow?.id}`);
 	};
 
 	const max = 20;

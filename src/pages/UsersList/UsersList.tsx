@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {observer} from 'mobx-react';
+import {useStore} from '../../mobx/selectors/usersListSelector';
 
 import {process, State} from '@progress/kendo-data-query';
 import {
@@ -11,7 +13,7 @@ import {
 import {Form, Field, FormElement} from '@progress/kendo-react-form';
 import {Button} from '@progress/kendo-react-buttons';
 import FormInput from '../../components/FormInput';
-import users from '../../utils/users.json';
+import data from '../../utils/users.json';
 
 import styled, {css} from 'styled-components';
 import '@progress/kendo-theme-default/dist/all.css';
@@ -30,7 +32,9 @@ interface UsersListState {
 	gridClickedRow: InputType | null;
 }
 
-export default function UsersList() {
+const UsersList = observer(() => {
+	const store = useStore();
+
 	const [state, setState] = useState<UsersListState>({
 		gridDataState: {
 			sort: [{field: 'userName', dir: 'asc'}],
@@ -41,16 +45,24 @@ export default function UsersList() {
 		gridClickedRow: null,
 	});
 
-	const [usersFromApi, setUsersFromApi] = useState(
-		users.map((user: InputType) => {
-			return {...user, enabled: user.enabled ? 'Yes' : 'No'};
-		}),
-	);
+	const [usersFromApi, setUsersFromApi] = useState<Array<InputType> | []>([]);
+	console.log('Users from api: ', usersFromApi);
 	const [foundUsers, setFoundUsers] = useState<Array<InputType> | null>(null);
 
+	useEffect(() => {
+		store.addUsers(data);
+		const users = [...store.users];
+		setUsersFromApi(
+			users.map((user: InputType) => {
+				return {...user, enabled: user.enabled ? 'Yes' : 'No'};
+			}),
+		);
+	}, [store]);
+
 	const inputValidator = (value: any) => (!value ? 'Please enter a text.' : '');
+
 	const navigate = useNavigate();
-  
+
 	const handleSearchChange = (dataItem: any) => {
 		if (dataItem.value === '') {
 			return setFoundUsers(null);
@@ -58,6 +70,7 @@ export default function UsersList() {
 		const foundUser = usersFromApi.filter((user) =>
 			user.userName.toLowerCase().includes(dataItem.value.toLowerCase()),
 		);
+
 		setFoundUsers(foundUser ? foundUser : null);
 	};
 
@@ -129,7 +142,7 @@ export default function UsersList() {
 			</div>
 		</div>
 	);
-}
+});
 
 const StyledTd = styled.td`
 	${(props) =>
@@ -148,3 +161,5 @@ const StyledButton = styled(Button)({
 	backgroundColor: '#569ff9',
 	color: '#fff',
 });
+
+export default UsersList;

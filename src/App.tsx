@@ -1,9 +1,8 @@
 import React, {lazy, Suspense} from 'react';
 import {Routes, Route, useLocation} from 'react-router-dom';
 import LoaderSpinner from '../src/components/Spinner/Spinner';
-import {useObserver, observer} from 'mobx-react';
+import {observer} from 'mobx-react';
 import {useStore} from './mobx/selectors/usersListSelector';
-import users from './utils/users.json';
 
 import './App.css';
 
@@ -21,28 +20,33 @@ const UserDetail = lazy(
 		),
 );
 
-// const PageNotFound = lazy(
-// 	() =>
-// 		import(
-// 			'./pages/PageNotFound/PageNotFound' /*webpackChunkName: "Not-Found-Page" */
-// 		),
-// );
+const PageNotFound = lazy(
+	() =>
+		import(
+			'./pages/PageNotFound/PageNotFound' /*webpackChunkName: "Not-Found-Page" */
+		),
+);
 
 const App = observer(() => {
+	const store = useStore();
+	const users = [...store.users];
 	const location = useLocation();
 	return (
 		<Suspense fallback={<LoaderSpinner />}>
 			<Routes>
 				<Route path="/" element={<UsersList />} />
 				<Route path="/userDetail/:id" element={<UserDetail />} />
-				{/* <Route
+				<Route
 					path={
-						location.pathname !== '/' && location.pathname !== '/userDetail/:id'
+						location.pathname !== '/' &&
+						!users.find(
+							(user) => location.pathname === `/userDetail/${user.id}`,
+						)
 							? location.pathname
 							: ''
 					}
 					element={<PageNotFound />}
-				/> */}
+				/>
 			</Routes>
 		</Suspense>
 	);

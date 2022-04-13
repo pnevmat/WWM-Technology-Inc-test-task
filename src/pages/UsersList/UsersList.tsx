@@ -82,9 +82,18 @@ const UsersList = observer(() => {
 		console.log('Event: ', e);
 		const clickedRow = usersFromApi.find((user) => user.id === e.dataItem.id);
 
-		setState(clickedRow ? {...state, gridClickedRow: clickedRow} : {...state});
+		if (clickedRow) {
+			setState({...state, gridClickedRow: clickedRow});
 
-		navigate(`/userDetail/${clickedRow?.id}`);
+			store.setSelectedUser({
+				...clickedRow,
+				enabled: clickedRow.enabled === 'Yes' ? true : false,
+			});
+
+			navigate(`/userDetail/${clickedRow.id}`);
+		} else {
+			return;
+		}
 	};
 
 	const max = 20;

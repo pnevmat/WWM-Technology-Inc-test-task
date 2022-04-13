@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
+import {observer} from 'mobx-react';
+import {useStore} from '../../mobx/selectors/usersListSelector';
 import {Input, Switch} from '@progress/kendo-react-inputs';
-import styled, {css} from 'styled-components';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 
+import styled, {css} from 'styled-components';
 import styles from './UserDetail.module.css';
 
 const firstNameRegex = new RegExp(/\W/);
@@ -37,11 +39,26 @@ const lastNameValidator = (lastName: string, firstName: string) => {
 	}
 };
 
-export default function UserDetail() {
+const UserDetail = observer(() => {
+	const store = useStore();
+	const selectedUser = {...store.selectedUser};
 	const [editable, setEditable] = useState({
-		firstName: {name: 'User First Name', editable: false},
-		lastName: {name: 'User Last Name', editable: false},
-		enabled: {value: false, editable: false},
+		firstName: {
+			name: selectedUser.fullName
+				? selectedUser.fullName.split(' ')[0]
+				: 'User First Name',
+			editable: false,
+		},
+		lastName: {
+			name: selectedUser.fullName
+				? selectedUser.fullName.split(' ')[1]
+				: 'User Last Name',
+			editable: false,
+		},
+		enabled: {
+			value: selectedUser.enabled ? selectedUser.enabled : false,
+			editable: false,
+		},
 	});
 	const [visited, setVisited] = useState(false);
 	const [firstNameChange, setFirstNameChange] = useState<
@@ -92,6 +109,11 @@ export default function UserDetail() {
 				)}
 				<li className={styles.mb3}>
 					<div className={styles.inputContainer}>
+						<span>User Name: {selectedUser.userName}</span>
+					</div>
+				</li>
+				<li className={styles.mb3}>
+					<div className={styles.inputContainer}>
 						{editable.firstName.editable ? (
 							<>
 								<StyledInput
@@ -117,7 +139,7 @@ export default function UserDetail() {
 								)}
 							</>
 						) : (
-							<span>{editable.firstName.name}</span>
+							<span>First Name: {editable.firstName.name}</span>
 						)}
 					</div>
 					{editable.firstName.editable ? (
@@ -168,7 +190,7 @@ export default function UserDetail() {
 								)}
 							</>
 						) : (
-							<span>{editable.lastName.name}</span>
+							<span>Last Name: {editable.lastName.name}</span>
 						)}
 					</div>
 					{editable.lastName.editable ? (
@@ -194,13 +216,18 @@ export default function UserDetail() {
 				</li>
 				<li className={styles.mb3}>
 					<div className={styles.inputContainer}>
+						<span>Last Login: {selectedUser.lastLogin}</span>
+					</div>
+				</li>
+				<li className={styles.mb3}>
+					<div className={styles.inputContainer}>
 						{editable.enabled.editable ? (
 							<StyledSwitch
 								value={enabled}
 								onChange={(e) => setEnabled(e.target.value)}
 							/>
 						) : (
-							<span>{enabled ? 'Yes' : 'No'}</span>
+							<span>Enabled: {enabled ? 'Yes' : 'No'}</span>
 						)}
 					</div>
 					{editable.enabled.editable ? (
@@ -227,7 +254,7 @@ export default function UserDetail() {
 			</ul>
 		</div>
 	);
-}
+});
 
 const StyledInput = styled(Input)({
 	width: '100%',
@@ -288,3 +315,5 @@ const StyledSwitch = styled(Switch)(({value}) => ({
 	},
 	fontSize: '10px',
 }));
+
+export default UserDetail;

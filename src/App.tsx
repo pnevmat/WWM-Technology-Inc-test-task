@@ -1,6 +1,9 @@
 import React, {lazy, Suspense} from 'react';
 import {Routes, Route, useLocation} from 'react-router-dom';
 import LoaderSpinner from '../src/components/Spinner/Spinner';
+import {useObserver, observer} from 'mobx-react';
+import {useStore} from './mobx/selectors/usersListSelector';
+import users from './utils/users.json';
 
 import './App.css';
 
@@ -25,7 +28,7 @@ const UserDetail = lazy(
 // 		),
 // );
 
-function App() {
+const App = observer(() => {
 	const location = useLocation();
 	return (
 		<Suspense fallback={<LoaderSpinner />}>
@@ -43,6 +46,6 @@ function App() {
 			</Routes>
 		</Suspense>
 	);
-}
+});
 
 export default App;

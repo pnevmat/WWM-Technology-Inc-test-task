@@ -1,0 +1,30 @@
+.container {
+	text-align: center;
+}
+
+.wrapper {
+	display: inline-block;
+	width: 100%;
+	max-width: 420px;
+	margin-top: 20%;
+	margin-bottom: 20%;
+}
+
+.headerMessage {
+	font-size: 50px;
+	font-weight: 700;
+	text-transform: capitalize;
+}
+
+.errorContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.errorNumber,
+.errorText {
+	font-size: 30px;
+	font-weight: 700;
+	text-transform: capitalize;
+}

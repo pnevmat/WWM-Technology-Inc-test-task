@@ -67,7 +67,8 @@ const UserDetail = observer(() => {
 	const [lastNameChange, setLastNameChange] = useState<
 		string | number | string[]
 	>('');
-	const [enabled, setEnabled] = useState(false);
+	const [enabled, setEnabled] = useState(selectedUser.enabled);
+	console.log('Enabled with selected user value: ', enabled);
 
 	const handleSave = (marker: string) => {
 		switch (marker) {
@@ -223,11 +224,11 @@ const UserDetail = observer(() => {
 					<div className={styles.inputContainer}>
 						{editable.enabled.editable ? (
 							<StyledSwitch
-								value={enabled}
+								checked={enabled}
 								onChange={(e) => setEnabled(e.target.value)}
 							/>
 						) : (
-							<span>Enabled: {enabled ? 'Yes' : 'No'}</span>
+							<span>Enabled: {selectedUser.enabled ? 'Yes' : 'No'}</span>
 						)}
 					</div>
 					{editable.enabled.editable ? (
@@ -271,7 +272,7 @@ const StyledInput = styled(Input)({
 	},
 });
 
-const StyledSwitch = styled(Switch)(({value}) => ({
+const StyledSwitch = styled(Switch)(({checked}) => ({
 	width: '60px',
 	height: '26px',
 	'&:hover': {
@@ -286,17 +287,20 @@ const StyledSwitch = styled(Switch)(({value}) => ({
 		justifyContent: 'space-around',
 		width: '60px',
 		height: '26px',
-		border: value ? '1px solid green' : '1px solid #c5c4c4',
+		border: checked ? '1px solid green !important' : '1px solid red !important',
 		borderRadius: '999px',
-		backgroundColor: '#ffffff',
+		backgroundColor: checked ? '#07ca07 !important' : '#f47770 !important',
 		color: '#424242',
 		outline: 0,
 		transition: 'background-color 200ms ease-in-out',
 	},
+	'& > span > span': {
+		color: '#424242 !important',
+	},
 	'& > span :last-child': {
 		position: 'absolute',
 		top: '50%',
-		left: value ? '23px' : '7px',
+		left: checked ? '1px' : '-1px',
 		width: 0,
 		height: 0,
 		overflow: 'visible',
@@ -310,7 +314,7 @@ const StyledSwitch = styled(Switch)(({value}) => ({
 		border: '1px solid rgba(0, 0, 0, 0.2)',
 		borderRadius: '999px',
 		color: '#424242',
-		backgroundColor: value ? 'green' : '#fafafa',
+		backgroundColor: checked ? 'green' : 'red',
 		transform: 'translate(-50%, -50%)',
 	},
 	fontSize: '10px',

@@ -1,14 +1,14 @@
 [
 	{
 		"id": "frf",
-		"userName": "Jon Konor",
+		"userName": "JonKonor",
 		"fullName": "Bob Rolings",
 		"lastLogin": "15 jan 2015",
 		"enabled": false
 	},
 	{
 		"id": "dfef",
-		"userName": "Brad Pit",
+		"userName": "BradPit",
 		"fullName": "Luk Branson",
 		"lastLogin": "25 Aug 2015",
 		"enabled": true
@@ -22,7 +22,7 @@
 	},
 	{
 		"id": "tiojh",
-		"userName": "Super Man",
+		"userName": "SuperMan",
 		"fullName": "Roy Benan",
 		"lastLogin": "30 Feb 2015",
 		"enabled": true

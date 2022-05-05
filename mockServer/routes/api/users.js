@@ -15,7 +15,6 @@ router.get('/users', async (req, res, next) => {
 });
 
 router.post('/adduser', validateCreateUser, async (req, res, next) => {
-	// console.log('Received request: ', req);
 	try {
 		const user = await addUser(req.body);
 

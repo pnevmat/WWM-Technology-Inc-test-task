@@ -6,7 +6,6 @@ const arrayOfObjectsHandler = (buffer) => {
 	let valueStartIndex = 0;
 
 	for (let i = 0; i <= buffer.length - 1; i++) {
-		// console.log('Buffer item: ', buffer[i]);
 		if (i <= 1 && buffer[i] === '[') {
 			result = [];
 		} else if (i >= 1 && buffer[i] === '{') {
@@ -25,10 +24,8 @@ const arrayOfObjectsHandler = (buffer) => {
 		) {
 			if (!objectProperty) {
 				objectProperty = buffer[i];
-				// console.log('Object property: ', objectProperty);
 			} else {
 				objectProperty += buffer[i];
-				// console.log('Object property: ', objectProperty);
 			}
 		} else if (i > 1 && buffer[i] === ':') {
 			valueStartIndex = i + 1;
@@ -41,15 +38,10 @@ const arrayOfObjectsHandler = (buffer) => {
 		) {
 			if (!objectValue) {
 				objectValue = buffer[i];
-				// console.log('Object value: ', objectValue);
 			} else {
 				objectValue += buffer[i];
-				// console.log('Object value: ', objectValue);
 			}
 		} else if (i > 1 && buffer[i] === ',' && i < buffer.length - 1) {
-			// console.log('Index of iterator: ', i);
-			// console.log('Buffer end index: ', buffer.length - 1);
-			// console.log('Object property: ', objectProperty);
 			object[objectProperty] = objectValue;
 			objectProperty = null;
 			objectValue = null;
@@ -83,7 +75,6 @@ const arrayOfObjectsHandler = (buffer) => {
 			valueStartIndex = 0;
 		}
 	}
-	// console.log('Result of arrayOfObjectsHandler: ', result);
 	return result;
 };
 

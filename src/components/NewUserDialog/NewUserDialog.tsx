@@ -8,7 +8,7 @@ import {Switch} from '@progress/kendo-react-inputs';
 import FormInput from '../FormInput';
 import {Button} from '@progress/kendo-react-buttons';
 
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import '@progress/kendo-theme-default/dist/all.css';
 import styles from './NewUserDialog.module.css';
 
@@ -80,23 +80,17 @@ const NewUserDialog: FC<NewUserDialogProps> = observer(({closeModal}) => {
 	};
 
 	const handleSubmit = (dataItem: any) => {
-		console.log('Submited data: ', dataItem);
 		const newUserData = {
 			userName: dataItem.UserName,
 			fullName: [dataItem.FirstName, dataItem.LastName].join(' '),
 			lastLogin: new Date().toDateString(),
 			enabled: inputChange.enabled,
 		};
-		console.log('New user data object to store: ', newUserData);
+
 		addUserAction(newUserData).then(({data}: any) => {
-			// Наладить нормальную передачу запроса на бэк и ответ в request.body
-			console.log('Data in response: ', data);
 			const response = data;
-			console.log('Response from api: ', response);
 			store.addUser(response as UsersListType);
 		});
-
-		// store.addUser(newUserData);
 
 		closeModal(false);
 	};

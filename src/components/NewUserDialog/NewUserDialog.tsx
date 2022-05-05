@@ -1,6 +1,7 @@
 import {FC, useState} from 'react';
 import {observer} from 'mobx-react';
 import {useStore} from '../../mobx/selectors/usersListSelector';
+import addUserAction from '../../mobx/actions/addUsersAction';
 import CloseIcon from '@mui/icons-material/Close';
 import {Form, Field, FormElement} from '@progress/kendo-react-form';
 import {Switch} from '@progress/kendo-react-inputs';
@@ -13,6 +14,14 @@ import styles from './NewUserDialog.module.css';
 
 interface NewUserDialogProps {
 	closeModal: Function;
+}
+
+interface UsersListType {
+	id?: string;
+	userName: string;
+	fullName: string;
+	lastLogin: string;
+	enabled: boolean;
 }
 
 const NewUserDialog: FC<NewUserDialogProps> = observer(({closeModal}) => {
@@ -73,18 +82,22 @@ const NewUserDialog: FC<NewUserDialogProps> = observer(({closeModal}) => {
 	const handleSubmit = (dataItem: any) => {
 		console.log('Submited data: ', dataItem);
 		const newUserData = {
-			id: `${dataItem.UserName[0]}${dataItem.UserName[1]}${
-				dataItem.FirstName[dataItem.FirstName.length - 2]
-			}${dataItem.FirstName[dataItem.FirstName.length - 1]}${
-				dataItem.LastName[0]
-			}${dataItem.LastName[1]}`,
 			userName: dataItem.UserName,
 			fullName: [dataItem.FirstName, dataItem.LastName].join(' '),
 			lastLogin: new Date().toDateString(),
 			enabled: inputChange.enabled,
 		};
 		console.log('New user data object to store: ', newUserData);
-		store.addUser(newUserData);
+		addUserAction(newUserData).then(({data}: any) => {
+			// Наладить нормальную передачу запроса на бэк и ответ в request.body
+			console.log('Data in response: ', data);
+			const response = data;
+			console.log('Response from api: ', response);
+			store.addUser(response as UsersListType);
+		});
+
+		// store.addUser(newUserData);
+
 		closeModal(false);
 	};
 

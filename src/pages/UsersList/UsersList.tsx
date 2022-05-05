@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {observer} from 'mobx-react';
 import {useStore} from '../../mobx/selectors/usersListSelector';
+import getUsersAction from '../../mobx/actions/getUsersAction';
 
 import {process, State} from '@progress/kendo-data-query';
 import {
@@ -14,14 +15,13 @@ import {Form, Field, FormElement} from '@progress/kendo-react-form';
 import {Button} from '@progress/kendo-react-buttons';
 import FormInput from '../../components/FormInput';
 import NewUserDialog from '../../components/NewUserDialog/NewUserDialog';
-import data from '../../utils/users.json';
 
 import styled, {css} from 'styled-components';
 import '@progress/kendo-theme-default/dist/all.css';
 import styles from './UsersList.module.css';
 
 interface InputType {
-	id: string;
+	id?: string;
 	userName: string;
 	fullName: string;
 	lastLogin: string;
@@ -56,17 +56,24 @@ const UsersList = observer(() => {
 	useEffect(() => {
 		console.log('Use effect started');
 
-		if (data && usersFromApi.length === 0) {
+		if (usersFromApi.length === 0) {
 			console.log('Data from query to store delivery started');
-
-			store.addUsers(data);
+			getUsersAction().then((data) => {
+				// const users = JSON.parse(data);
+				console.log('Parsed users: ', data);
+				console.log('Type of parsed users: ', typeof data);
+				store.addUsers(data);
+			});
 		}
 
 		if (usersFromApi.length < store.users.length) {
 			console.log('Store update started');
 			const users = [...store.users];
+			console.log('Users in store update: ', users);
 			setUsersFromApi(
 				users.map((user: InputType) => {
+					console.log('User in users list from api: ', user);
+
 					return {...user, enabled: user.enabled ? 'Yes' : 'No'};
 				}),
 			);

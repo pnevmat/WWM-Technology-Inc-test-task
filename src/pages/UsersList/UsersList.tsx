@@ -35,8 +35,6 @@ interface UsersListState {
 
 const UsersList = observer(() => {
 	const store = useStore();
-	console.log('Users in store: ', store.users);
-	console.log('Users in store length: ', store.users.length);
 
 	const [state, setState] = useState<UsersListState>({
 		gridDataState: {
@@ -49,32 +47,29 @@ const UsersList = observer(() => {
 	});
 
 	const [usersFromApi, setUsersFromApi] = useState<Array<InputType> | []>([]);
-	console.log('Users from api: ', usersFromApi);
 	const [foundUsers, setFoundUsers] = useState<Array<InputType> | null>(null);
 	const [isOpenNewUserDialog, setIsOpenNewUserDialog] = useState(false);
 
 	useEffect(() => {
-		console.log('Use effect started');
-
 		if (usersFromApi.length === 0) {
-			console.log('Data from query to store delivery started');
 			getUsersAction().then((data) => {
-				// const users = JSON.parse(data);
-				console.log('Parsed users: ', data);
-				console.log('Type of parsed users: ', typeof data);
 				store.addUsers(data);
 			});
 		}
 
 		if (usersFromApi.length < store.users.length) {
-			console.log('Store update started');
 			const users = [...store.users];
-			console.log('Users in store update: ', users);
 			setUsersFromApi(
 				users.map((user: InputType) => {
-					console.log('User in users list from api: ', user);
-
-					return {...user, enabled: user.enabled ? 'Yes' : 'No'};
+					const dateArray = user.lastLogin.split(' ').splice(1);
+					const normaliseDate = `${dateArray[1]} ${dateArray[0]} ${dateArray[2]}`;
+					return {
+						...user,
+						lastLogin: Number(user.lastLogin[0])
+							? user.lastLogin
+							: normaliseDate,
+						enabled: user.enabled ? 'Yes' : 'No',
+					};
 				}),
 			);
 		}
@@ -100,7 +95,6 @@ const UsersList = observer(() => {
 	};
 
 	const handleGridRowClick = (e: GridRowClickEvent) => {
-		console.log('Event: ', e);
 		const clickedRow = usersFromApi.find((user) => user.id === e.dataItem.id);
 
 		if (clickedRow) {
@@ -151,7 +145,7 @@ const UsersList = observer(() => {
 					</StyledButton>
 				</div>
 
-				<Grid
+				<StyledGrid
 					data={process(
 						foundUsers ? foundUsers : usersFromApi,
 						state.gridDataState,
@@ -170,13 +164,17 @@ const UsersList = observer(() => {
 						cell={(props) => <StyledTd>{props.dataItem.enabled}</StyledTd>}
 						title="Enabled"
 					/>
-				</Grid>
+				</StyledGrid>
 			</div>
 			{isOpenNewUserDialog && (
 				<NewUserDialog closeModal={setIsOpenNewUserDialog} />
 			)}
 		</div>
 	);
+});
+
+const StyledGrid = styled(Grid)({
+	'& .k-master-row:hover': {cursor: 'pointer'},
 });
 
 const StyledTd = styled.td`

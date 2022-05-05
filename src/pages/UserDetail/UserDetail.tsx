@@ -5,7 +5,7 @@ import {Input, Switch} from '@progress/kendo-react-inputs';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import styles from './UserDetail.module.css';
 
 const firstNameRegex = new RegExp(/\W/);
@@ -68,7 +68,6 @@ const UserDetail = observer(() => {
 		string | number | string[]
 	>('');
 	const [enabled, setEnabled] = useState(selectedUser.enabled);
-	console.log('Enabled with selected user value: ', enabled);
 
 	const handleSave = (marker: string) => {
 		switch (marker) {

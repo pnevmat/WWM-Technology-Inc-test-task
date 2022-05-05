@@ -1,19 +1,7 @@
 import React from 'react';
-import {observable} from 'mobx';
-import {useObserver, Observer} from 'mobx-react';
-
-// const initialState = {
-// 	users: []
-// };
-
-// // const store = observable(initialState);
-// const store = observable(initialState);
-
-
-// export default store;
 
 export interface UsersListType {
-	id: string;
+	id?: string;
 	userName: string;
 	fullName: string;
 	lastLogin: string;

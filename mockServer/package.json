@@ -16,6 +16,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "buffer-string-decoder": "^1.0.0",
     "eslint": "^7.19.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",

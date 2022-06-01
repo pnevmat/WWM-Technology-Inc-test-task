@@ -15,7 +15,6 @@ const getUsers = async () => {
 		);
 
 		const decodedBuffer = bufferStringDecoder(db);
-		console.log('Decoded buffer: ', decodedBuffer);
 		return decodedBuffer;
 	} catch (e) {
 		return e.message;

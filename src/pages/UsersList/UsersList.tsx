@@ -59,7 +59,6 @@ const UsersList = observer(() => {
 
 		if (usersFromApi.length < store.users.length) {
 			const users = [...store.users];
-			console.log('Users from store: ', users);
 			setUsersFromApi(
 				users.map((user: InputType) => {
 					const dateArray = user.lastLogin.split(' ').splice(1);
